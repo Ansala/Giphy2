@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Movie Buttons</title>
+</head>
+
+<body>
+  <button data-movie="star-wars">Star Wars</button>
+  <button data-movie="predator">Join The Hunt</button>
+  <button data-movie="Titanic">Jack--Come Back...</button>
+ 
+  <!--<button data-movie="mission-impossible">Disc will self destruct</button>
+  <button data-movie="die-hard">Yippie-Ki-Yay..</button>
+  <button data-movie="titanic">My Heart Will Go On</button>
+  <button data-movie="the-wizard-of-oz">There is no place like Hmome</button>
+  <img src="https://media0.giphy.com/media/3oz8xQcHAjMWYY5oJy/200_s.gif" data-still="https://media0.giphy.com/media/3oz8xQcHAjMWYY5oJy/200_s.gif" data-animate="https://media0.giphy.com/media/3oz8xQcHAjMWYY5oJy/200.gif" data-state="still" class="gif">
+
+  <img src="https://media0.giphy.com/media/l3fZT3QDeKlbZFidG/200_s.gif" data-still="https://media0.giphy.com/media/l3fZT3QDeKlbZFidG/200_s.gif" data-animate="https://media0.giphy.com/media/l3fZT3QDeKlbZFidG/200.gif" data-state="still" class="gif">
+
+
+//Predator
+  <img src="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200_s.gif" data-still="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200_s.gif" data-animate="https://media2.giphy.com/media/8rFQp4kHXJ0gU/200.gif" data-state="still" class="gif">
+
+//Terminator
+  <img src="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-still="https://media3.giphy.com/media/W6LbnBigDe4ZG/200_s.gif" data-animate="https://media3.giphy.com/media/W6LbnBigDe4ZG/200.gif" data-state="still" class="gif">
+-->
+  <div id="gifs-appear-here">
+  </div>
+   
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  //$(".gif").on("click", function() {
+      // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+    //  var state = $(this).attr("data-state");
+      // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+      // Then, set the image's data-state to animate
+      // Else set src to the data-still value
+      //if (state === "still") {
+        //$(this).attr("src", $(this).attr("data-animate"));
+        //$(this).attr("data-state", "animate");
+      //} else {
+        //$(this).attr("src", $(this).attr("data-still"));
+        //$(this).attr("data-state", "still");
+      //}
+    //});
+    // Adding click event listen listener to all buttons
+    $("button").on("click", function() {
+      // Grabbing and storing the data-movie property value from the button
+      var movie = $(this).attr("data-movie");
+
+      // Constructing a queryURL using the movie name
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        movie + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+      // Performing an AJAX request with the queryURL
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      })
+        // After data comes back from the request
+        .then(function(response) {
+          console.log(queryURL);
+
+          console.log(response);
+          // storing the data from the AJAX request in the results variable
+          var results = response.data;
+
+          // Looping through each result item
+          for (var i = 0; i < results.length; i++) {
+
+            // Creating and storing a div tag
+            var movieDiv = $("<div>");
+
+            // Creating a paragraph tag with the result item's rating
+            var p = $("<p>").text("Rating: " + results[i].rating);
+
+            // Creating and storing an image tag
+            var MovieImage = $("<img>");
+            // Setting the src attribute of the image to a property pulled off the result item
+            MovieImage.attr("src", results[i].images.fixed_height.url);
+
+            // Appending the paragraph and image tag to the movieDiv
+            movieDiv.append(p);
+            movieDiv.append(MovieImage);
+
+            // Prependng the movieDiv to the HTML page in the "#gifs-appear-here" div
+            $("#gifs-appear-here").prepend(movieDiv);
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
